@@ -34,7 +34,7 @@ services:
     networks: 
       - localnet
     environment:
-      - SERVER_NAME=sl1
+      - SERVER_ID=sl1
       - BROKER_SERVICE=servicio-broker
       - NUM_SENS_INCENDIO=1
       - NUM_SENS_TEMPERATURA=1
@@ -48,7 +48,7 @@ services:
     networks: 
       - localnet
     environment:
-      - SERVER_NAME=sl2
+      - SERVER_ID=sl2
       - BROKER_SERVICE=servicio-broker
       - NUM_SENS_INCENDIO=1
       - NUM_SENS_TEMPERATURA=1

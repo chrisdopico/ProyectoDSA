@@ -7,23 +7,66 @@
         "info": ""
     },
     {
+        "id": "847187c03429c5ad",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "${BROKER_SERVICE}",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "2ac7539c2e9ea1c6",
+        "type": "mongodb4-client",
+        "name": "",
+        "protocol": "mongodb",
+        "hostname": "",
+        "port": "",
+        "dbName": "${MONGO_DB}",
+        "authSource": "",
+        "authMechanism": "DEFAULT",
+        "tls": false,
+        "tlsCAFile": "",
+        "tlsInsecure": false,
+        "uri": "${MONGO_URL}",
+        "advanced": "",
+        "uriTabActive": "tab-uri-advanced"
+    },
+    {
         "id": "7aec0647a4acf9e2",
         "type": "mqtt in",
         "z": "f6f2187d.f17ca8",
         "name": "",
         "topic": "/sensores/temperatura",
         "qos": "2",
-        "datatype": "auto",
+        "datatype": "json",
         "broker": "847187c03429c5ad",
         "nl": false,
         "rap": true,
         "rh": 0,
         "inputs": 0,
         "x": 140,
-        "y": 40,
+        "y": 260,
         "wires": [
             [
-                "0e83176ec379757b"
+                "48a4fc778770406c"
             ]
         ]
     },
@@ -70,22 +113,6 @@
         ]
     },
     {
-        "id": "0e83176ec379757b",
-        "type": "debug",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 350,
-        "y": 40,
-        "wires": []
-    },
-    {
         "id": "35b491f486612781",
         "type": "debug",
         "z": "f6f2187d.f17ca8",
@@ -118,29 +145,37 @@
         "wires": []
     },
     {
-        "id": "847187c03429c5ad",
-        "type": "mqtt-broker",
-        "name": "",
-        "broker": "${BROKER_SERVICE}",
-        "port": "1883",
-        "clientid": "",
-        "autoConnect": true,
-        "usetls": false,
-        "protocolVersion": "4",
-        "keepalive": "60",
-        "cleansession": true,
-        "birthTopic": "",
-        "birthQos": "0",
-        "birthPayload": "",
-        "birthMsg": {},
-        "closeTopic": "",
-        "closeQos": "0",
-        "closePayload": "",
-        "closeMsg": {},
-        "willTopic": "",
-        "willQos": "0",
-        "willPayload": "",
-        "willMsg": {},
-        "sessionExpiry": ""
+        "id": "d538ad539d14491f",
+        "type": "mongodb4",
+        "z": "f6f2187d.f17ca8",
+        "clientNode": "2ac7539c2e9ea1c6",
+        "collection": "lecturas_sensores",
+        "operation": "insert",
+        "output": "toArray",
+        "name": "lecturas_sensores insert",
+        "x": 630,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "48a4fc778770406c",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "preparar insercion mongodb",
+        "func": "msg.payload = [{\n    \"idSensor\": msg.payload.idSensor,\n    \"timestamp\": new Date(msg.payload.timestamp),\n    \"valor\": msg.payload.valor\n}]\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 260,
+        "wires": [
+            [
+                "d538ad539d14491f"
+            ]
+        ]
     }
 ]
