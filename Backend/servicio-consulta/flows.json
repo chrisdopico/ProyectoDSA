@@ -28,11 +28,11 @@
         "type": "http in",
         "z": "f6f2187d.f17ca8",
         "name": "",
-        "url": "/localservers",
+        "url": "/servidores-locales",
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 140,
+        "x": 160,
         "y": 80,
         "wires": [
             [
@@ -46,14 +46,13 @@
         "z": "f6f2187d.f17ca8",
         "clientNode": "412c2389580c0420",
         "collection": "servidores_locales",
-        "operation": "aggregate",
+        "operation": "find",
         "output": "toArray",
         "name": "recupera todos los servidores locales",
-        "x": 530,
+        "x": 570,
         "y": 80,
         "wires": [
             [
-                "4885f66c22406cc7",
                 "272d19c2f704e304"
             ]
         ]
@@ -63,53 +62,17 @@
         "type": "function",
         "z": "f6f2187d.f17ca8",
         "name": "set query",
-        "func": "// devuelve todos los documentos y elimina\n// el campo \"_id\" de la respuesta\nmsg.payload = [[\n    {\n        $match: {}\n    },\n    {\n        $project: \n        {\n            \"_id\": 0\n        }\n    }\n]]\n\nreturn msg;",
+        "func": "msg.payload = [{}]\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 300,
+        "x": 340,
         "y": 80,
         "wires": [
             [
                 "9fa618fe9da221c4"
-            ]
-        ]
-    },
-    {
-        "id": "4885f66c22406cc7",
-        "type": "debug",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 750,
-        "y": 40,
-        "wires": []
-    },
-    {
-        "id": "65ac4a0f29f90374",
-        "type": "inject",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "props": [],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 170,
-        "y": 40,
-        "wires": [
-            [
-                "3c6f1f329a2d47b9"
             ]
         ]
     },
@@ -120,7 +83,7 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 750,
+        "x": 790,
         "y": 80,
         "wires": []
     },
@@ -129,12 +92,12 @@
         "type": "http in",
         "z": "f6f2187d.f17ca8",
         "name": "",
-        "url": "/localservers/:name/sensors",
+        "url": "/servidores-locales/:idServidorLocal/sensores",
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 190,
-        "y": 220,
+        "x": 250,
+        "y": 140,
         "wires": [
             [
                 "c2bd8afc37680276"
@@ -146,14 +109,14 @@
         "type": "function",
         "z": "f6f2187d.f17ca8",
         "name": "set query",
-        "func": "msg.payload = [[\n    {\n        $match: {\n            \"nombre\": msg.req.params.name\n        }\n    }\n]]\n\nreturn msg;",
+        "func": "msg.payload = [[\n    {\n        $match: {\n            \"_id\": msg.req.params.idServidorLocal\n        }\n    }\n]]\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 400,
-        "y": 220,
+        "x": 520,
+        "y": 140,
         "wires": [
             [
                 "0d816dc6f214e510"
@@ -165,40 +128,15 @@
         "type": "mongodb4",
         "z": "f6f2187d.f17ca8",
         "clientNode": "412c2389580c0420",
-        "collection": "sensores_servidor_local",
+        "collection": "sensores_por_servidor_local",
         "operation": "aggregate",
         "output": "toArray",
         "name": "servidores_locales aggregate",
-        "x": 600,
-        "y": 220,
+        "x": 720,
+        "y": 140,
         "wires": [
             [
                 "674d2d3c13371a25"
-            ]
-        ]
-    },
-    {
-        "id": "b0dfbb5afd0f13da",
-        "type": "inject",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "props": [
-            {
-                "p": "req.params.name",
-                "v": "sl1",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 270,
-        "y": 260,
-        "wires": [
-            [
-                "c2bd8afc37680276"
             ]
         ]
     },
@@ -207,18 +145,17 @@
         "type": "function",
         "z": "f6f2187d.f17ca8",
         "name": "response",
-        "func": "if(msg.payload.length > 0)\n{\n    msg.payload = msg.payload[0];\n}else\n{\n    msg.payload = {\n        \"message\": \"Local server not found\"\n    }\n    \n    msg.statusCode = 404\n}\n\nreturn msg;",
+        "func": "if(msg.payload.length > 0)\n{\n    msg.payload = msg.payload[0];\n}else\n{\n    msg.payload = {\n        \"message\": \"El servidor especificado no existe\"\n    }\n    \n    msg.statusCode = 404\n}\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 800,
-        "y": 220,
+        "x": 920,
+        "y": 140,
         "wires": [
             [
-                "249f02b75edc8ce9",
-                "aed9f18e9a3787de"
+                "249f02b75edc8ce9"
             ]
         ]
     },
@@ -229,25 +166,8 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 930,
-        "y": 220,
-        "wires": []
-    },
-    {
-        "id": "aed9f18e9a3787de",
-        "type": "debug",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 930,
-        "y": 180,
+        "x": 1050,
+        "y": 140,
         "wires": []
     },
     {
@@ -255,12 +175,12 @@
         "type": "http in",
         "z": "f6f2187d.f17ca8",
         "name": "",
-        "url": "/sensors/:sensorId/readings",
+        "url": "/sensores/:idSensor/lecturas",
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
         "x": 190,
-        "y": 380,
+        "y": 200,
         "wires": [
             [
                 "20cc65d79e1ecc12"
@@ -272,14 +192,14 @@
         "type": "function",
         "z": "f6f2187d.f17ca8",
         "name": "set query",
-        "func": "msg.payload = [[\n    {\n        $match: {\n            \"_id\": msg.req.params.sensorId\n        }\n    }\n]]\n\nreturn msg;",
+        "func": "msg.payload = [[\n    {\n        $match: {\n            \"_id\": msg.req.params.idSensor\n        }\n    }\n]]\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
         "x": 400,
-        "y": 380,
+        "y": 200,
         "wires": [
             [
                 "d6e6fc346b501596"
@@ -291,40 +211,15 @@
         "type": "mongodb4",
         "z": "f6f2187d.f17ca8",
         "clientNode": "412c2389580c0420",
-        "collection": "lecturas_sensor",
+        "collection": "lecturas_por_sensor",
         "operation": "aggregate",
         "output": "toArray",
         "name": "servidores_locales aggregate",
         "x": 600,
-        "y": 380,
+        "y": 200,
         "wires": [
             [
                 "49d5086db68d890d"
-            ]
-        ]
-    },
-    {
-        "id": "044a36feea67148f",
-        "type": "inject",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "props": [
-            {
-                "p": "req.params.sensorId",
-                "v": "629519055ca378dc6c5a7829",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 270,
-        "y": 420,
-        "wires": [
-            [
-                "20cc65d79e1ecc12"
             ]
         ]
     },
@@ -333,18 +228,17 @@
         "type": "function",
         "z": "f6f2187d.f17ca8",
         "name": "response",
-        "func": "if(msg.payload.length > 0)\n{\n    msg.payload = msg.payload[0];\n}else\n{\n    msg.payload = {\n        \"message\": \"Local server not found\"\n    }\n    \n    msg.statusCode = 404\n}\n\nreturn msg;",
+        "func": "if(msg.payload.length > 0)\n{\n    msg.payload = msg.payload[0];\n}else\n{\n    msg.payload = {\n        \"message\": \"El sensor especificado no existe\"\n    }\n    \n    msg.statusCode = 404\n}\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
         "x": 800,
-        "y": 380,
+        "y": 200,
         "wires": [
             [
-                "a996c11a4b172035",
-                "e5e0cd8dad406b34"
+                "a996c11a4b172035"
             ]
         ]
     },
@@ -356,66 +250,7 @@
         "statusCode": "",
         "headers": {},
         "x": 930,
-        "y": 380,
-        "wires": []
-    },
-    {
-        "id": "e5e0cd8dad406b34",
-        "type": "debug",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 930,
-        "y": 340,
-        "wires": []
-    },
-    {
-        "id": "db8881ea3ed79c00",
-        "type": "inject",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "MONGO_URL",
-        "payloadType": "env",
-        "x": 170,
-        "y": 540,
-        "wires": [
-            [
-                "2597a467190d1fe2"
-            ]
-        ]
-    },
-    {
-        "id": "2597a467190d1fe2",
-        "type": "debug",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 310,
-        "y": 540,
+        "y": 200,
         "wires": []
     }
 ]
