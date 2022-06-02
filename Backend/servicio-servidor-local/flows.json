@@ -1,0 +1,196 @@
+[
+    {
+        "id": "309f538e916d9ee0",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "/sensores/temperatura",
+        "qos": "1",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0ebacf60de60e21b",
+        "x": 480,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "8c23fa81bd075aed",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 110,
+        "y": 100,
+        "wires": [
+            [
+                "5fddfc302b2c2d5a"
+            ]
+        ]
+    },
+    {
+        "id": "5fddfc302b2c2d5a",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "func": "msg.payload = {\n    \"idServidor\": \"sl1\",\n    \"valor\": 0\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 240,
+        "y": 100,
+        "wires": [
+            [
+                "3923887c92faa17e"
+            ]
+        ]
+    },
+    {
+        "id": "3923887c92faa17e",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "/sensores/incendio",
+        "qos": "1",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0ebacf60de60e21b",
+        "x": 410,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "76f7a88c39beea75",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 110,
+        "y": 160,
+        "wires": [
+            [
+                "4d6bce3962c84231"
+            ]
+        ]
+    },
+    {
+        "id": "4d6bce3962c84231",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "func": "msg.payload = {\n    \"idServidor\": \"sl1\",\n    \"valor\": 1\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 240,
+        "y": 160,
+        "wires": [
+            [
+                "69ce97e59fe346b4"
+            ]
+        ]
+    },
+    {
+        "id": "69ce97e59fe346b4",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "/sensores/presencia",
+        "qos": "1",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0ebacf60de60e21b",
+        "x": 420,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "84be8568d208e933",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 110,
+        "y": 40,
+        "wires": [
+            [
+                "9f113a42ef98f914"
+            ]
+        ]
+    },
+    {
+        "id": "9f113a42ef98f914",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "gen random temp",
+        "func": "msg.payload = {\n    \"idSensor\": \"sl1\",\n    \"valor\": Math.random() * 80,\n    \"timestamp\": Date.now()\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 270,
+        "y": 40,
+        "wires": [
+            [
+                "309f538e916d9ee0"
+            ]
+        ]
+    },
+    {
+        "id": "0ebacf60de60e21b",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "${BROKER_SERVICE}",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    }
+]

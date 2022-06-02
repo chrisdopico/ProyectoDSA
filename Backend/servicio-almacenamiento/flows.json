@@ -1,0 +1,146 @@
+[
+    {
+        "id": "f6f2187d.f17ca8",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "7aec0647a4acf9e2",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "/sensores/temperatura",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "847187c03429c5ad",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 40,
+        "wires": [
+            [
+                "0e83176ec379757b"
+            ]
+        ]
+    },
+    {
+        "id": "e205cc9233070649",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "/sensores/presencia",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "847187c03429c5ad",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 120,
+        "wires": [
+            [
+                "1b393352c6b829bb"
+            ]
+        ]
+    },
+    {
+        "id": "5cb13f602bec731a",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "/sensores/incendio",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "847187c03429c5ad",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 80,
+        "wires": [
+            [
+                "35b491f486612781"
+            ]
+        ]
+    },
+    {
+        "id": "0e83176ec379757b",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 350,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "35b491f486612781",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 350,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "1b393352c6b829bb",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 350,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "847187c03429c5ad",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "${BROKER_SERVICE}",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    }
+]
