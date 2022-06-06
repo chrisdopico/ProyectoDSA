@@ -55,7 +55,7 @@
         "z": "f6f2187d.f17ca8",
         "name": "",
         "topic": "/sensores/temperatura",
-        "qos": "2",
+        "qos": "0",
         "datatype": "json",
         "broker": "847187c03429c5ad",
         "nl": false,
@@ -63,7 +63,7 @@
         "rh": 0,
         "inputs": 0,
         "x": 140,
-        "y": 260,
+        "y": 160,
         "wires": [
             [
                 "48a4fc778770406c"
@@ -76,18 +76,18 @@
         "z": "f6f2187d.f17ca8",
         "name": "",
         "topic": "/sensores/presencia",
-        "qos": "2",
-        "datatype": "auto",
+        "qos": "0",
+        "datatype": "json",
         "broker": "847187c03429c5ad",
         "nl": false,
         "rap": true,
         "rh": 0,
         "inputs": 0,
         "x": 130,
-        "y": 120,
+        "y": 100,
         "wires": [
             [
-                "1b393352c6b829bb"
+                "48a4fc778770406c"
             ]
         ]
     },
@@ -97,64 +97,32 @@
         "z": "f6f2187d.f17ca8",
         "name": "",
         "topic": "/sensores/incendio",
-        "qos": "2",
-        "datatype": "auto",
+        "qos": "0",
+        "datatype": "json",
         "broker": "847187c03429c5ad",
         "nl": false,
         "rap": true,
         "rh": 0,
         "inputs": 0,
         "x": 130,
-        "y": 80,
+        "y": 40,
         "wires": [
             [
-                "35b491f486612781"
+                "48a4fc778770406c"
             ]
         ]
-    },
-    {
-        "id": "35b491f486612781",
-        "type": "debug",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 350,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "1b393352c6b829bb",
-        "type": "debug",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 350,
-        "y": 120,
-        "wires": []
     },
     {
         "id": "d538ad539d14491f",
         "type": "mongodb4",
         "z": "f6f2187d.f17ca8",
         "clientNode": "2ac7539c2e9ea1c6",
-        "collection": "lecturas_sensores",
-        "operation": "insert",
+        "collection": "",
+        "operation": "",
         "output": "toArray",
-        "name": "lecturas_sensores insert",
-        "x": 630,
-        "y": 260,
+        "name": "",
+        "x": 670,
+        "y": 160,
         "wires": [
             []
         ]
@@ -164,17 +132,163 @@
         "type": "function",
         "z": "f6f2187d.f17ca8",
         "name": "preparar insercion mongodb",
-        "func": "msg.payload = [{\n    \"idSensor\": msg.payload.idSensor,\n    \"timestamp\": new Date(msg.payload.timestamp),\n    \"valor\": msg.payload.valor\n}]\n\nreturn msg;",
+        "func": "msg.payload = [{\n    \"idSensor\": msg.payload.idSensor,\n    \"timestamp\": new Date(msg.payload.timestamp),\n    \"valor\": msg.payload.valor\n}]\n\nmsg.collection = \"lecturas_sensores\"\nmsg.operation = \"insertOne\"\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 380,
-        "y": 260,
+        "x": 400,
+        "y": 100,
         "wires": [
             [
                 "d538ad539d14491f"
+            ]
+        ]
+    },
+    {
+        "id": "8db6110e093dce0e",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "/estado",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "847187c03429c5ad",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 90,
+        "y": 220,
+        "wires": [
+            [
+                "60d42214bdda34f2"
+            ]
+        ]
+    },
+    {
+        "id": "60d42214bdda34f2",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "preparar insercion mongodb",
+        "func": "msg.payload = [{\n    \"idServidorLocal\": msg.payload.idServidorLocal,\n    \"estado\": msg.payload.estado,\n    \"timestamp\": new Date(msg.payload.timestamp)\n}]\n\nmsg.collection = \"estados_servidores_locales\"\nmsg.operation = \"insertOne\"\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 220,
+        "wires": [
+            [
+                "d538ad539d14491f"
+            ]
+        ]
+    },
+    {
+        "id": "775adba9944d7083",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 110,
+        "y": 320,
+        "wires": [
+            [
+                "9e2227ab13c13f3e"
+            ]
+        ]
+    },
+    {
+        "id": "9e2227ab13c13f3e",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "func": "msg.payload = [{}]\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 240,
+        "y": 320,
+        "wires": [
+            [
+                "a186928526745232"
+            ]
+        ]
+    },
+    {
+        "id": "a186928526745232",
+        "type": "mongodb4",
+        "z": "f6f2187d.f17ca8",
+        "clientNode": "2ac7539c2e9ea1c6",
+        "collection": "estados_servidores_locales",
+        "operation": "deleteMany",
+        "output": "toArray",
+        "name": "estados_servidores_locales deleteMany",
+        "x": 480,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "54a6f00cf6e8b074",
+        "type": "mongodb4",
+        "z": "f6f2187d.f17ca8",
+        "clientNode": "2ac7539c2e9ea1c6",
+        "collection": "lecturas_sensores",
+        "operation": "deleteMany",
+        "output": "toArray",
+        "name": "lecturas_sensores deleteMany",
+        "x": 450,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "98508683eae871c3",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "func": "msg.payload = [{}]\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 240,
+        "y": 360,
+        "wires": [
+            [
+                "54a6f00cf6e8b074"
+            ]
+        ]
+    },
+    {
+        "id": "8fb81a6ae6833fcf",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 110,
+        "y": 360,
+        "wires": [
+            [
+                "98508683eae871c3"
             ]
         ]
     }

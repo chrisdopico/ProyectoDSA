@@ -1,29 +1,5 @@
 [
     {
-        "id": "f6f2187d.f17ca8",
-        "type": "tab",
-        "label": "Flow 1",
-        "disabled": false,
-        "info": ""
-    },
-    {
-        "id": "412c2389580c0420",
-        "type": "mongodb4-client",
-        "name": "",
-        "protocol": "mongodb",
-        "hostname": "",
-        "port": "",
-        "dbName": "${MONGO_DB}",
-        "authSource": "",
-        "authMechanism": "DEFAULT",
-        "tls": false,
-        "tlsCAFile": "",
-        "tlsInsecure": false,
-        "uri": "${MONGO_URL}",
-        "advanced": "",
-        "uriTabActive": "tab-uri-advanced"
-    },
-    {
         "id": "6307206ff6aca97e",
         "type": "http in",
         "z": "f6f2187d.f17ca8",
@@ -45,7 +21,7 @@
         "type": "mongodb4",
         "z": "f6f2187d.f17ca8",
         "clientNode": "412c2389580c0420",
-        "collection": "servidores_locales",
+        "collection": "servidores_locales_con_ultimo_estado",
         "operation": "find",
         "output": "toArray",
         "name": "recupera todos los servidores locales",
@@ -128,7 +104,7 @@
         "type": "mongodb4",
         "z": "f6f2187d.f17ca8",
         "clientNode": "412c2389580c0420",
-        "collection": "sensores_por_servidor_local",
+        "collection": "sensores_por_servidor_local_con_ultimas_lecturas",
         "operation": "aggregate",
         "output": "toArray",
         "name": "servidores_locales aggregate",
@@ -171,86 +147,20 @@
         "wires": []
     },
     {
-        "id": "faad40b4415f3b4c",
-        "type": "http in",
-        "z": "f6f2187d.f17ca8",
+        "id": "412c2389580c0420",
+        "type": "mongodb4-client",
         "name": "",
-        "url": "/sensores/:idSensor/lecturas",
-        "method": "get",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 190,
-        "y": 200,
-        "wires": [
-            [
-                "20cc65d79e1ecc12"
-            ]
-        ]
-    },
-    {
-        "id": "20cc65d79e1ecc12",
-        "type": "function",
-        "z": "f6f2187d.f17ca8",
-        "name": "set query",
-        "func": "msg.payload = [[\n    {\n        $match: {\n            \"_id\": msg.req.params.idSensor\n        }\n    }\n]]\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 400,
-        "y": 200,
-        "wires": [
-            [
-                "d6e6fc346b501596"
-            ]
-        ]
-    },
-    {
-        "id": "d6e6fc346b501596",
-        "type": "mongodb4",
-        "z": "f6f2187d.f17ca8",
-        "clientNode": "412c2389580c0420",
-        "collection": "lecturas_por_sensor",
-        "operation": "aggregate",
-        "output": "toArray",
-        "name": "servidores_locales aggregate",
-        "x": 600,
-        "y": 200,
-        "wires": [
-            [
-                "49d5086db68d890d"
-            ]
-        ]
-    },
-    {
-        "id": "49d5086db68d890d",
-        "type": "function",
-        "z": "f6f2187d.f17ca8",
-        "name": "response",
-        "func": "if(msg.payload.length > 0)\n{\n    msg.payload = msg.payload[0];\n}else\n{\n    msg.payload = {\n        \"message\": \"El sensor especificado no existe\"\n    }\n    \n    msg.statusCode = 404\n}\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 800,
-        "y": 200,
-        "wires": [
-            [
-                "a996c11a4b172035"
-            ]
-        ]
-    },
-    {
-        "id": "a996c11a4b172035",
-        "type": "http response",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 930,
-        "y": 200,
-        "wires": []
+        "protocol": "mongodb",
+        "hostname": "",
+        "port": "",
+        "dbName": "${MONGO_DB}",
+        "authSource": "",
+        "authMechanism": "DEFAULT",
+        "tls": false,
+        "tlsCAFile": "",
+        "tlsInsecure": false,
+        "uri": "${MONGO_URL}",
+        "advanced": "",
+        "uriTabActive": "tab-uri-advanced"
     }
 ]
